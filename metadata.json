@@ -1,0 +1,7 @@
+{
+  "name": "Web to APK Studio",
+  "description": "Web-to-APK converter and Android WebView project generator with live preview and code generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

