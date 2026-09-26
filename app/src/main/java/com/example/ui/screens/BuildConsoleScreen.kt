@@ -87,6 +87,41 @@ fun BuildConsoleScreen(
 
                 Divider()
 
+                // Explanatory Banner for Physical Phone Downloads
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.size(22.dp)
+                        )
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                "Fiziksel Telefonunuza İndirme İpucu:",
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                            Text(
+                                "Google AI Studio ekranı buluttaki sanal cihazda çalışır. Resmi ve imzalı APK'yı kendi telefonunuza indirmek için sağ üstteki 'Push to GitHub' butonuna basıp GitHub Actions > Artifacts kısmından indirebilirsiniz.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.9f)
+                            )
+                        }
+                    }
+                }
+
                 // Option 1: Save & Download APK to device
                 Button(
                     onClick = {
@@ -99,7 +134,7 @@ fun BuildConsoleScreen(
                 ) {
                     Icon(Icons.Default.Download, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Telefona İndir & Kaydet (.apk)", fontWeight = FontWeight.Bold)
+                    Text("Cihaz Hafızasına Kaydet (.apk)", fontWeight = FontWeight.Bold)
                 }
 
                 // Option 2: Install directly with Package Installer
@@ -141,7 +176,7 @@ fun BuildConsoleScreen(
                 ) {
                     Icon(Icons.Default.Share, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("APK Dosyasını Paylaş (WhatsApp, Drive...)", fontWeight = FontWeight.SemiBold)
+                    Text("APK & Kodları Paylaş (Drive, WhatsApp)", fontWeight = FontWeight.SemiBold)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
