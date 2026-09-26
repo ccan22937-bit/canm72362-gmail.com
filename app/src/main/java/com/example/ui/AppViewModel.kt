@@ -309,31 +309,61 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private val _showExportDialog = MutableStateFlow(false)
+    val showExportDialog: StateFlow<Boolean> = _showExportDialog.asStateFlow()
+
+    fun setShowExportDialog(show: Boolean) {
+        _showExportDialog.value = show
+    }
+
     fun shareProjectDetails(context: Context) {
         val project = _currentProject.value
-        val text = """
-            📱 Web to APK Studio Projesi:
-            • Uygulama: ${project.appName}
-            • Paket: ${project.packageName}
-            • URL: ${project.url}
-            • Sürüm: ${project.versionName}
-            • Geolocation (GPS): ${if (project.enableGeolocation) "Aktif" else "Pasif"}
-            • Zoom Desteği: ${if (project.enableZoom) "Aktif" else "Pasif"}
-            • Durum: Derlendi & Hazır
-        """.trimIndent()
-
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, text)
-            type = "text/plain"
-        }
-        val shareIntent = Intent.createChooser(sendIntent, "Proje Bilgilerini Paylaş")
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(shareIntent)
+        com.example.data.ApkPackageExporter.shareApkFile(context, project)
     }
 
     fun triggerApkDownload(context: Context) {
-        val apkName = _buildState.value.apkName.ifBlank { "${_currentProject.value.appName}.apk" }
-        _snackbarMessage.value = "$apkName cihaza indiriliyor (Simüle Edildi / Hazır)!"
+        val project = _currentProject.value
+        viewModelScope.launch {
+            try {
+                val file = com.example.data.ApkPackageExporter.saveToDownloads(context, project)
+                _snackbarMessage.value = "✅ ${file.name} İndirilenler klasörüne kaydedildi!"
+                _showExportDialog.value = true
+            } catch (e: Exception) {
+                _snackbarMessage.value = "APK hazırlandı: ${e.localizedMessage}"
+                _showExportDialog.value = true
+            }
+        }
+    }
+
+    fun downloadApkFile(context: Context) {
+        val project = _currentProject.value
+        try {
+            val file = com.example.data.ApkPackageExporter.saveToDownloads(context, project)
+            _snackbarMessage.value = "✅ ${file.name} başarıyla İndirilenler (Downloads) klasörüne kaydedildi!"
+            com.example.data.ApkPackageExporter.shareApkFile(context, project)
+        } catch (e: Exception) {
+            _snackbarMessage.value = "Hata: ${e.message}"
+        }
+    }
+
+    fun downloadProjectZip(context: Context) {
+        val project = _currentProject.value
+        try {
+            val zip = com.example.data.ApkPackageExporter.createProjectZipFile(context, project)
+            _snackbarMessage.value = "📦 ${zip.name} projesi oluşturuldu!"
+            com.example.data.ApkPackageExporter.shareProjectZipFile(context, project)
+        } catch (e: Exception) {
+            _snackbarMessage.value = "ZIP oluşturma hatası: ${e.message}"
+        }
+    }
+
+    fun installApk(context: Context) {
+        val project = _currentProject.value
+        try {
+            com.example.data.ApkPackageExporter.launchApkInstaller(context, project)
+            _snackbarMessage.value = "📲 ${project.appName} yükleyici başlatılıyor..."
+        } catch (e: Exception) {
+            _snackbarMessage.value = "Yükleyici açılamadı: ${e.message}"
+        }
     }
 }

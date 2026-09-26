@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.ui.AppViewModel
 import com.example.ui.StudioTab
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BuildConsoleScreen(
     viewModel: AppViewModel,
@@ -35,12 +36,116 @@ fun BuildConsoleScreen(
 ) {
     val buildState by viewModel.buildState.collectAsState()
     val project by viewModel.currentProject.collectAsState()
+    val showExportDialog by viewModel.showExportDialog.collectAsState()
     val context = LocalContext.current
     val listState = rememberLazyListState()
 
     LaunchedEffect(buildState.logs.size) {
         if (buildState.logs.isNotEmpty()) {
             listState.animateScrollToItem(buildState.logs.size - 1)
+        }
+    }
+
+    if (showExportDialog) {
+        ModalBottomSheet(
+            onDismissRequest = { viewModel.setShowExportDialog(false) },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF16A34A)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Default.Android, contentDescription = null, tint = Color.White)
+                    }
+                    Column {
+                        Text(
+                            text = "${project.appName} APK Paketi",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "${project.packageName} • v${project.versionName}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                Divider()
+
+                // Option 1: Save & Download APK to device
+                Button(
+                    onClick = {
+                        viewModel.setShowExportDialog(false)
+                        viewModel.downloadApkFile(context)
+                    },
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A))
+                ) {
+                    Icon(Icons.Default.Download, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Telefona İndir & Kaydet (.apk)", fontWeight = FontWeight.Bold)
+                }
+
+                // Option 2: Install directly with Package Installer
+                FilledTonalButton(
+                    onClick = {
+                        viewModel.setShowExportDialog(false)
+                        viewModel.installApk(context)
+                    },
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Default.InstallMobile, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Cihaza Kur / Yükle (Paket Yükleyici)", fontWeight = FontWeight.SemiBold)
+                }
+
+                // Option 3: Download complete Android Studio project ZIP
+                OutlinedButton(
+                    onClick = {
+                        viewModel.setShowExportDialog(false)
+                        viewModel.downloadProjectZip(context)
+                    },
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Default.FolderZip, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Tam Android Studio Projesini İndir (.zip)", fontWeight = FontWeight.SemiBold)
+                }
+
+                // Option 4: Share APK
+                OutlinedButton(
+                    onClick = {
+                        viewModel.setShowExportDialog(false)
+                        viewModel.shareProjectDetails(context)
+                    },
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Default.Share, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("APK Dosyasını Paylaş (WhatsApp, Drive...)", fontWeight = FontWeight.SemiBold)
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 

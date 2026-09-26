@@ -148,7 +148,7 @@ fun LiveWebViewScreen(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     FilledTonalButton(
-                        onClick = { viewModel.setTab(StudioTab.COMPILER) },
+                        onClick = { viewModel.triggerApkDownload(context) },
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                         modifier = Modifier.height(36.dp)
                     ) {
@@ -213,7 +213,7 @@ fun LiveWebViewScreen(
                     }
 
                     Button(
-                        onClick = { viewModel.setTab(StudioTab.COMPILER) },
+                        onClick = { viewModel.triggerApkDownload(context) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         ),
@@ -470,7 +470,7 @@ fun LiveWebViewScreen(
 
             // Harita Üzerinde Yüzen "Uygulamayı İndir" Butonu (Floating In-App Download Button)
             ExtendedFloatingActionButton(
-                onClick = { viewModel.setTab(StudioTab.COMPILER) },
+                onClick = { viewModel.triggerApkDownload(context) },
                 icon = {
                     Icon(
                         Icons.Default.Download,

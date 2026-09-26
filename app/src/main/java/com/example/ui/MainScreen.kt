@@ -70,7 +70,7 @@ fun MainScreen(
                 },
                 actions = {
                     FilledTonalButton(
-                        onClick = { viewModel.setTab(StudioTab.COMPILER) },
+                        onClick = { viewModel.triggerApkDownload(context) },
                         colors = ButtonDefaults.filledTonalButtonColors(
                             containerColor = androidx.compose.ui.graphics.Color(0xFF16A34A),
                             contentColor = androidx.compose.ui.graphics.Color.White
